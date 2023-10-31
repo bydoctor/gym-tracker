@@ -52,11 +52,8 @@ void create_person()
     input_check(std::cin >> weight, weight);
 
     // Person create
-    Person newPerson;
-    newPerson.set_fullname(fullname);
-    newPerson.set_age(age);
-    newPerson.set_height(height);
-    newPerson.set_weight(weight);
+    Person newPerson{fullname, age, height, weight};
+
     newPerson.set_id(ID);
     increase_ID();
     records.push_back(newPerson);
