@@ -18,13 +18,9 @@ private:
     double weight{};
 
 public:
-    Person() {}
-    Person(std::string fullname_val, size_t age_val, double height_val, double weight_val)
+    Person() : fullname{"None"}, age{0}, height{0}, weight{0} {}
+    Person(std::string fullname_val, size_t age_val, double height_val, double weight_val) : fullname{fullname_val}, age{age_val}, height{height_val}, weight{weight_val}
     {
-        fullname = fullname_val;
-        age = age_val;
-        height = height_val;
-        weight = weight_val;
     }
     void set_fullname(std::string s) { fullname = s; }
     std::string get_fullname() { return fullname; }
