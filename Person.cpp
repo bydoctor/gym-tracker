@@ -29,11 +29,25 @@ void input_check(std::istream &stream, T &variable)
     }
 }
 
+size_t gender_check(size_t &variable)
+{
+    std::cin >> variable;
+    while (variable != 1 && variable != 2)
+    {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        std::cout << "Wrong choice , please enter 1 or 2 : ";
+        std::cin >> variable;
+    }
+    return variable;
+}
+
 void create_person()
 {
 
     std::string fullname{};
     size_t age{};
+    size_t gender{};
     double height{};
     double weight{};
 
@@ -41,6 +55,9 @@ void create_person()
 
     std::cout << "Please enter the Fullname : " << std::endl;
     std::getline(std::cin, fullname);
+
+    std::cout << "Please enter your gender (Male=1,Female=2): " << std::endl;
+    gender = gender_check(gender);
 
     std::cout << "Please enter the age : " << std::endl;
     input_check(std::cin >> age, age);
@@ -52,7 +69,7 @@ void create_person()
     input_check(std::cin >> weight, weight);
 
     // Person create
-    Person newPerson{fullname, age, height, weight};
+    Person newPerson{fullname, gender, age, height, weight};
 
     newPerson.set_id(ID);
     increase_ID();
@@ -61,6 +78,7 @@ void create_person()
     std::cout << "\nPerson created" << std::endl;
     std::cout << "\n---------Person Info----------" << std::endl;
     std::cout << "Fullname : " << newPerson.get_fullname() << std::endl;
+    std::cout << "Gender : " << newPerson.get_gender() << std::endl;
     std::cout << "Age      : " << newPerson.get_age() << std::endl;
     std::cout << "Height   : " << newPerson.get_height() << std::endl;
     std::cout << "Weight   : " << newPerson.get_weight() << std::endl;
@@ -69,9 +87,12 @@ void create_person()
 
 void view_person(Person &p)
 {
-    VariadicTable<size_t, std::string, int, double, double> vt({"ID", "Name", "Age", "Height", "Weight"}, 10);
+    VariadicTable<size_t, std::string, std::string, int, double, double> vt({"ID", "Name", "Gender",
+                                                                             "Age",
+                                                                             "Height", "Weight"},
+                                                                            10);
 
-    vt.addRow(p.get_id(), p.get_fullname(), p.get_age(), p.get_height(), p.get_weight());
+    vt.addRow(p.get_id(), p.get_fullname(), p.get_gender(), p.get_age(), p.get_height(), p.get_weight());
 
     vt.print(std::cout);
     std::cout << "\n";
@@ -80,13 +101,13 @@ void view_person(Person &p)
 void view_person_list()
 {
 
-    VariadicTable<size_t, std::string, int, double, double> vt({"ID", "Name", "Age", "Height", "Weight"}, 10);
+    VariadicTable<size_t, std::string, std::string, int, double, double> vt({"ID", "Name", "Gender", "Age", "Height", "Weight"}, 10);
 
     if (records.size())
     {
         for (auto p : records)
         {
-            vt.addRow(p.get_id(), p.get_fullname(), p.get_age(), p.get_height(), p.get_weight());
+            vt.addRow(p.get_id(), p.get_fullname(), p.get_gender(), p.get_age(), p.get_height(), p.get_weight());
         }
         vt.print(std::cout);
         std::cout << "\n";
@@ -145,6 +166,14 @@ void update_field(Person &thisPerson, int selection)
     }
     case 2:
     {
+        size_t gender{};
+        std::cout << "\nEnter the new value of gender (Male=1, Female=2) :" << std::endl;
+        thisPerson.set_gender(gender_check(gender));
+        update_field(thisPerson, update_selection_handler());
+        break;
+    }
+    case 3:
+    {
         size_t age{};
         std::cout << "\nEnter the new value of age :" << std::endl;
         input_check(std::cin >> age, age);
@@ -152,7 +181,7 @@ void update_field(Person &thisPerson, int selection)
         update_field(thisPerson, update_selection_handler());
         break;
     }
-    case 3:
+    case 4:
     {
         double height{};
         std::cout << "\nEnter the new value of height :" << std::endl;
@@ -161,7 +190,7 @@ void update_field(Person &thisPerson, int selection)
         update_field(thisPerson, update_selection_handler());
         break;
     }
-    case 4:
+    case 5:
     {
         double weight{};
         std::cout << "\nEnter the new value of weight :" << std::endl;
@@ -170,7 +199,7 @@ void update_field(Person &thisPerson, int selection)
         update_field(thisPerson, update_selection_handler());
         break;
     }
-    case 5:
+    case 6:
     {
         break;
     }
@@ -185,10 +214,11 @@ int update_selection_handler()
 {
     int selection{};
     std::cout << "\n1 - Edit Fullname " << std::endl;
-    std::cout << "2 - Edit Age " << std::endl;
-    std::cout << "3 - Edit Height " << std::endl;
-    std::cout << "4 - Edit Weight " << std::endl;
-    std::cout << "5- Exit Update Menu " << std::endl;
+    std::cout << "2 - Edit Gender " << std::endl;
+    std::cout << "3 - Edit Age " << std::endl;
+    std::cout << "4 - Edit Height " << std::endl;
+    std::cout << "5 - Edit Weight " << std::endl;
+    std::cout << "6- Exit Update Menu " << std::endl;
     std::cout << "\nPlease select the field you want to change : " << std::endl;
     input_check(std::cin >> selection, selection);
     return selection;
@@ -203,7 +233,6 @@ void update_person()
         std::cout << "\nPlease Enter the id number of the person you want to update : " << std::endl;
         input_check(std::cin >> id, id);
         Person *thisPerson = findPersonById(id);
-        thisPerson->set_age(14);
         if (!thisPerson->get_fullname().empty())
         {
             view_person(*thisPerson);
