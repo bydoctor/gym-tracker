@@ -4,6 +4,7 @@
 
 void create_person();
 void view_person_list();
+void view_calculations();
 void delete_person();
 void update_person();
 
@@ -17,11 +18,13 @@ private:
     size_t thisId;
     double height{};
     double weight{};
+    double bmr{};
 
 public:
     Person() : fullname{"None"}, gender{0}, age{0}, height{0}, weight{0} {}
     Person(std::string fullname_val, size_t gender_val, size_t age_val, double height_val, double weight_val) : fullname{fullname_val}, gender{gender_val}, age{age_val}, height{height_val}, weight{weight_val}
     {
+        bmr = bmr_calculation(gender, age, height, weight);
     }
     void set_fullname(std::string s) { fullname = s; }
     std::string get_fullname() { return fullname; }
@@ -54,6 +57,9 @@ public:
             return std::string("None");
         }
     }
+
+    const double bmr_calculation(size_t, size_t, size_t, size_t);
+    double get_bmr() { return bmr; }
 };
 
 #endif

@@ -14,12 +14,15 @@ void selection_handler(int selection)
         view_person_list();
         main_menu();
     case 3:
-        update_person();
+        view_calculations();
         main_menu();
     case 4:
-        delete_person();
+        update_person();
         main_menu();
     case 5:
+        delete_person();
+        main_menu();
+    case 6:
         exit(0);
     default:
         std::cout << "\nSorry. Wrong selection. Try again !\n"
@@ -32,9 +35,10 @@ void main_menu()
     int selection{};
     std::cout << "1 - Create Person " << std::endl;
     std::cout << "2 - View Person List " << std::endl;
-    std::cout << "3 - Update Person " << std::endl;
-    std::cout << "4 - Delete Person" << std::endl;
-    std::cout << "5- Exit" << std::endl;
+    std::cout << "3 - View Calculations " << std::endl;
+    std::cout << "4 - Update Person " << std::endl;
+    std::cout << "5 - Delete Person" << std::endl;
+    std::cout << "6- Exit" << std::endl;
     std::cout << "\nPlease enter your selection --> ";
     std::cin >> selection;
 

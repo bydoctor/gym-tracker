@@ -5,6 +5,9 @@
 std::vector<Person> records;
 static size_t ID{0};
 
+// prototypes
+Person *findPersonById(int);
+//
 void increase_ID()
 {
     ID++;
@@ -98,6 +101,16 @@ void view_person(Person &p)
     std::cout << "\n";
 }
 
+void view_calculations_for_person(Person &p)
+{
+    VariadicTable<size_t, std::string, double> vt({"ID", "Name", "BMR"}, 10);
+
+    vt.addRow(p.get_id(), p.get_fullname(), p.get_bmr());
+
+    vt.print(std::cout);
+    std::cout << "\n";
+}
+
 void view_person_list()
 {
 
@@ -119,6 +132,27 @@ void view_person_list()
     }
 }
 
+void view_calculations()
+{
+    view_person_list();
+
+    if (records.size() > 0)
+    {
+        size_t id{};
+        std::cout << "\nPlease Enter the id number of the person you want to see calculations : " << std::endl;
+        input_check(std::cin >> id, id);
+        Person *thisPerson = findPersonById(id);
+        if (!thisPerson->get_fullname().empty())
+        {
+
+            view_calculations_for_person(*thisPerson);
+        }
+        else
+        {
+            delete thisPerson;
+        }
+    }
+}
 Person *findPersonById(int id)
 {
     bool is_find{false};
@@ -274,5 +308,21 @@ void delete_person()
         std::cout << "\nPlease Enter the id number of the person you want to delete : " << std::endl;
         input_check(std::cin >> id, id);
         deletePersonByID(id);
+    }
+}
+
+const double Person::bmr_calculation(size_t gender, size_t age, size_t height, size_t weight)
+{
+    if (gender == 1)
+    {
+        return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    }
+    else if (gender == 2)
+    {
+        return 444.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    }
+    else
+    {
+        return 0.0;
     }
 }
