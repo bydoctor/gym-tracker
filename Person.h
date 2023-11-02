@@ -19,12 +19,14 @@ private:
     double height{};
     double weight{};
     double bmr{};
+    double bmi{};
 
 public:
     Person() : fullname{"None"}, gender{0}, age{0}, height{0}, weight{0} {}
     Person(std::string fullname_val, size_t gender_val, size_t age_val, double height_val, double weight_val) : fullname{fullname_val}, gender{gender_val}, age{age_val}, height{height_val}, weight{weight_val}
     {
         bmr = bmr_calculation(gender, age, height, weight);
+        bmi = bmi_calculation(height, weight);
     }
     void set_fullname(std::string s) { fullname = s; }
     std::string get_fullname() { return fullname; }
@@ -60,6 +62,9 @@ public:
 
     const double bmr_calculation(size_t, size_t, size_t, size_t);
     double get_bmr() { return bmr; }
+
+    const double bmi_calculation(double, double);
+    double get_bmi() { return bmi; }
 };
 
 #endif

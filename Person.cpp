@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "Person.h"
 #include "VariadicTable.h"
 #include <vector>
@@ -103,9 +104,9 @@ void view_person(Person &p)
 
 void view_calculations_for_person(Person &p)
 {
-    VariadicTable<size_t, std::string, double> vt({"ID", "Name", "BMR"}, 10);
+    VariadicTable<size_t, std::string, double, double> vt({"ID", "Name", "BMR", "BMI"}, 10);
 
-    vt.addRow(p.get_id(), p.get_fullname(), p.get_bmr());
+    vt.addRow(p.get_id(), p.get_fullname(), p.get_bmr(), p.get_bmi());
 
     vt.print(std::cout);
     std::cout << "\n";
@@ -325,4 +326,12 @@ const double Person::bmr_calculation(size_t gender, size_t age, size_t height, s
     {
         return 0.0;
     }
+}
+
+const double Person::bmi_calculation(double height, double weight)
+{
+    double multiplier = 100.0;
+    double value = (weight / ((height / 100) * (height / 100)));
+    // multiplier and static_cast operation for set the value as a 2 digits after decimal point
+    return static_cast<double>(static_cast<int>(value * multiplier)) / multiplier;
 }
