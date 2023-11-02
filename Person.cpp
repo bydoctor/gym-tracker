@@ -316,11 +316,11 @@ const double Person::bmr_calculation(size_t gender, size_t age, size_t height, s
 {
     if (gender == 1)
     {
-        return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+        return 66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age);
     }
     else if (gender == 2)
     {
-        return 444.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+        return 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age);
     }
     else
     {
