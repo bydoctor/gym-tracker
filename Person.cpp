@@ -102,14 +102,35 @@ void view_person(Person &p)
     std::cout << "\n";
 }
 
+void display_calorie_need(double bmr)
+{
+    std::cout << "-- Daily Calorie (kcal) Need by Activity Level -- \n";
+
+    // Daily Calorie Need by Activity Level
+    VariadicTable<double, double, double, double, double> daily_calorie({"Sedentary", "Lightly (1-3 Days/Week)", "Moderately (3-5 Days/ Week)", "Very Active (6-7 Days/Week)", "Extra Active (Hard Exercise & Job)"}, 10);
+
+    daily_calorie.addRow((bmr * 1.2), (bmr * 1.1375), (bmr * 1.55), (bmr * 1.725), (bmr * 1.9));
+
+    daily_calorie.print(std::cout);
+    std::cout << "\n";
+}
+
 void view_calculations_for_person(Person &p)
 {
-    VariadicTable<size_t, std::string, double, double> vt({"ID", "Name", "BMR", "BMI"}, 10);
+    std::cout << "\n"
+              << std::endl;
 
-    vt.addRow(p.get_id(), p.get_fullname(), p.get_bmr(), p.get_bmi());
+    double bmr{p.get_bmr()};
+
+    VariadicTable<size_t, std::string, double, double>
+        vt({"ID", "Name", "BMR (Basal Metabolic Rate)", "BMI (Body Mass Index)"}, 10);
+
+    vt.addRow(p.get_id(), p.get_fullname(), bmr, p.get_bmi());
 
     vt.print(std::cout);
-    std::cout << "\n";
+    std::cout << "\n\n";
+
+    display_calorie_need(bmr);
 }
 
 void view_person_list()

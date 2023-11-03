@@ -25,25 +25,40 @@ public:
     Person() : fullname{"None"}, gender{0}, age{0}, height{0}, weight{0} {}
     Person(std::string fullname_val, size_t gender_val, size_t age_val, double height_val, double weight_val) : fullname{fullname_val}, gender{gender_val}, age{age_val}, height{height_val}, weight{weight_val}
     {
-        bmr = bmr_calculation(gender, age, height, weight);
-        bmi = bmi_calculation(height, weight);
+        calculations();
     }
     void set_fullname(std::string s) { fullname = s; }
     std::string get_fullname() { return fullname; }
 
-    void set_age(size_t s_age) { age = s_age; }
+    void set_age(size_t s_age)
+    {
+        age = s_age;
+        calculations();
+    }
     size_t get_age() { return age; }
 
-    void set_height(double s_height) { height = s_height; }
+    void set_height(double s_height)
+    {
+        height = s_height;
+        calculations();
+    }
     double get_height() { return height; }
 
-    void set_weight(double s_weight) { weight = s_weight; }
+    void set_weight(double s_weight)
+    {
+        weight = s_weight;
+        calculations();
+    }
     double get_weight() { return weight; }
 
     void set_id(size_t s_id) { thisId = s_id; }
     size_t get_id() { return thisId; }
 
-    void set_gender(size_t s_gender) { gender = s_gender; }
+    void set_gender(size_t s_gender)
+    {
+        gender = s_gender;
+        calculations();
+    }
     std::string get_gender()
     {
         if (gender == 1)
@@ -65,6 +80,12 @@ public:
 
     const double bmi_calculation(double, double);
     double get_bmi() { return bmi; }
+
+    void calculations()
+    {
+        bmr = bmr_calculation(gender, age, height, weight);
+        bmi = bmi_calculation(height, weight);
+    }
 };
 
 #endif
