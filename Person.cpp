@@ -292,14 +292,13 @@ void update_person()
         if (!thisPerson->get_fullname().empty())
         {
             view_person(*thisPerson);
+            int selection = update_selection_handler();
+            update_field(*thisPerson, selection);
         }
         else
         {
             delete thisPerson;
         }
-
-        int selection = update_selection_handler();
-        update_field(*thisPerson, selection);
     }
 }
 

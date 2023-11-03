@@ -18,12 +18,11 @@ private:
     size_t thisId;
     double height{};
     double weight{};
-    double bmr{};
-    double bmi{};
+    double bmr{0};
+    double bmi{0};
 
 public:
-    Person() : fullname{"None"}, gender{0}, age{0}, height{0}, weight{0} {}
-    Person(std::string fullname_val, size_t gender_val, size_t age_val, double height_val, double weight_val) : fullname{fullname_val}, gender{gender_val}, age{age_val}, height{height_val}, weight{weight_val}
+    Person(std::string fullname_val = "", size_t gender_val = 0, size_t age_val = 0, double height_val = 0.0, double weight_val = 0.0) : fullname{fullname_val}, gender{gender_val}, age{age_val}, height{height_val}, weight{weight_val}
     {
         calculations();
     }
