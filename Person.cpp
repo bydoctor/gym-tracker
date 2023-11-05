@@ -54,6 +54,9 @@ void create_person()
     size_t gender{};
     double height{};
     double weight{};
+    double neck{};
+    double waist{};
+    double hip{};
 
     std::cin.get();
 
@@ -72,8 +75,17 @@ void create_person()
     std::cout << "Please enter the weight (kg): " << std::endl;
     input_check(std::cin >> weight, weight);
 
+    std::cout << "Please enter the neck circumference ( Widest - cm ) : " << std::endl;
+    input_check(std::cin >> neck, neck);
+
+    std::cout << "Please enter the waist circumference (Thinnest - cm ): " << std::endl;
+    input_check(std::cin >> waist, waist);
+
+    std::cout << "Please enter the hip circumference ( Widest - cm ): " << std::endl;
+    input_check(std::cin >> hip, hip);
+
     // Person create
-    Person newPerson{fullname, gender, age, height, weight};
+    Person newPerson{fullname, gender, age, height, weight, neck, waist, hip};
 
     newPerson.set_id(ID);
     increase_ID();
@@ -86,17 +98,20 @@ void create_person()
     std::cout << "Age      : " << newPerson.get_age() << std::endl;
     std::cout << "Height   : " << newPerson.get_height() << std::endl;
     std::cout << "Weight   : " << newPerson.get_weight() << std::endl;
+    std::cout << "Neck     : " << newPerson.get_neck() << std::endl;
+    std::cout << "Waist    : " << newPerson.get_waist() << std::endl;
+    std::cout << "Hip      : " << newPerson.get_hip() << std::endl;
     std::cout << "\n";
 }
 
 void view_person(Person &p)
 {
-    VariadicTable<size_t, std::string, std::string, int, double, double> vt({"ID", "Name", "Gender",
-                                                                             "Age",
-                                                                             "Height", "Weight"},
-                                                                            10);
+    VariadicTable<size_t, std::string, std::string, int, double, double, double, double, double> vt({"ID", "Name", "Gender",
+                                                                                                     "Age",
+                                                                                                     "Height", "Weight", "Neck", "Waist", "Hip"},
+                                                                                                    10);
 
-    vt.addRow(p.get_id(), p.get_fullname(), p.get_gender(), p.get_age(), p.get_height(), p.get_weight());
+    vt.addRow(p.get_id(), p.get_fullname(), p.get_gender(), p.get_age(), p.get_height(), p.get_weight(), p.get_neck(), p.get_waist(), p.get_hip());
 
     vt.print(std::cout);
     std::cout << "\n";
@@ -122,10 +137,10 @@ void view_calculations_for_person(Person &p)
 
     double bmr{p.get_bmr()};
 
-    VariadicTable<size_t, std::string, double, double>
-        vt({"ID", "Name", "BMR (Basal Metabolic Rate)", "BMI (Body Mass Index)"}, 10);
+    VariadicTable<size_t, std::string, double, double, double>
+        vt({"ID", "Name", "BMR (Basal Metabolic Rate)", "BMI (Body Mass Index)", "Fat Percentage %"}, 10);
 
-    vt.addRow(p.get_id(), p.get_fullname(), bmr, p.get_bmi());
+    vt.addRow(p.get_id(), p.get_fullname(), bmr, p.get_bmi(), p.get_fat_percentage());
 
     vt.print(std::cout);
     std::cout << "\n\n";
@@ -136,13 +151,13 @@ void view_calculations_for_person(Person &p)
 void view_person_list()
 {
 
-    VariadicTable<size_t, std::string, std::string, int, double, double> vt({"ID", "Name", "Gender", "Age", "Height", "Weight"}, 10);
+    VariadicTable<size_t, std::string, std::string, int, double, double, double, double, double> vt({"ID", "Name", "Gender", "Age", "Height", "Weight", "Neck", "Waist", "Hip"}, 10);
 
     if (records.size())
     {
         for (auto p : records)
         {
-            vt.addRow(p.get_id(), p.get_fullname(), p.get_gender(), p.get_age(), p.get_height(), p.get_weight());
+            vt.addRow(p.get_id(), p.get_fullname(), p.get_gender(), p.get_age(), p.get_height(), p.get_weight(), p.get_neck(), p.get_waist(), p.get_hip());
         }
         vt.print(std::cout);
         std::cout << "\n";
@@ -255,7 +270,37 @@ void update_field(Person &thisPerson, int selection)
         update_field(thisPerson, update_selection_handler());
         break;
     }
+
     case 6:
+    {
+        double neck{};
+        std::cout << "\nEnter the new value of neck :" << std::endl;
+        input_check(std::cin >> neck, neck);
+        thisPerson.set_neck(neck);
+        update_field(thisPerson, update_selection_handler());
+        break;
+    }
+
+    case 7:
+    {
+        double waist{};
+        std::cout << "\nEnter the new value of waist :" << std::endl;
+        input_check(std::cin >> waist, waist);
+        thisPerson.set_waist(waist);
+        update_field(thisPerson, update_selection_handler());
+        break;
+    }
+
+    case 8:
+    {
+        double hip{};
+        std::cout << "\nEnter the new value of hip :" << std::endl;
+        input_check(std::cin >> hip, hip);
+        thisPerson.set_hip(hip);
+        update_field(thisPerson, update_selection_handler());
+        break;
+    }
+    case 9:
     {
         break;
     }
@@ -274,7 +319,10 @@ int update_selection_handler()
     std::cout << "3 - Edit Age " << std::endl;
     std::cout << "4 - Edit Height " << std::endl;
     std::cout << "5 - Edit Weight " << std::endl;
-    std::cout << "6- Exit Update Menu " << std::endl;
+    std::cout << "6 - Edit Neck " << std::endl;
+    std::cout << "7 - Edit Waist " << std::endl;
+    std::cout << "8 - Edit Hip " << std::endl;
+    std::cout << "9- Exit Update Menu " << std::endl;
     std::cout << "\nPlease select the field you want to change : " << std::endl;
     input_check(std::cin >> selection, selection);
     return selection;
@@ -347,11 +395,36 @@ const double Person::bmr_calculation(size_t gender, size_t age, size_t height, s
         return 0.0;
     }
 }
+double set_digits_after_decimal_point(double value)
+{
+    double multiplier = 100.0;
+    // multiplier and static_cast operation for set the value as a 2 digits after decimal point
+    return static_cast<double>(static_cast<int>(value * multiplier)) / multiplier;
+}
 
 const double Person::bmi_calculation(double height, double weight)
 {
-    double multiplier = 100.0;
     double value = (weight / ((height / 100) * (height / 100)));
-    // multiplier and static_cast operation for set the value as a 2 digits after decimal point
-    return static_cast<double>(static_cast<int>(value * multiplier)) / multiplier;
+    return set_digits_after_decimal_point(value);
+}
+
+const double Person::fat_percentage_calculation(size_t gender, double height, double neck, double waist, double hip)
+{
+    double value{0.0};
+    // us navy fat percentage method
+
+    if (gender == 1) // if male
+    {
+        value = 495 / (1.0324 - 0.19077 * log10(waist - neck) + 0.15456 * log10(height)) - 450;
+        return set_digits_after_decimal_point(value);
+    }
+    else if (gender == 2) // if female
+    {
+        value = 495 / (1.29579 - 0.35004 * log10(waist + hip - neck) + 0.22100 * log10(height)) - 450;
+        return set_digits_after_decimal_point(value);
+    }
+    else
+    {
+        return 0.0;
+    }
 }
